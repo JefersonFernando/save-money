@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="stores">
+        <item>Loja 1 - R$xxx</item>
+        <item>Loja 2 - R$xxx</item>
+        <item>Loja 3 - R$xxx</item>
+    </string-array>
+</resources>
