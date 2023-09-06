@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".ListItemsActivity">
 
+    <Button
+        android:id="@+id/return_button"
+        android:layout_width="28dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="32dp"
+
+        android:background="@drawable/botao_voltar"
+        android:backgroundTintMode="?colorSecondary"
+
+        app:layout_constraintBottom_toBottomOf="@+id/logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/logo"
+        />
+
     <TextView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
@@ -36,7 +50,6 @@
 
     <ListView
         android:id="@+id/items_list"
-        style="@style/Widget.AppCompat.Light.ListView.DropDown"
         android:layout_width="0dp"
         android:layout_height="0dp"
 

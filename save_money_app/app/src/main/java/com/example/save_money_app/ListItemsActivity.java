@@ -22,7 +22,14 @@ public class ListItemsActivity extends AppCompatActivity {
         Button search = findViewById(R.id.search);
         ListView items = findViewById(R.id.items_list);
 
+        Button searchItem = findViewById(R.id.return_button);
+
+
         listName.setText(intent.getStringExtra("listName"));
+
+        searchItem.setOnClickListener(v -> {
+            finish();
+        });
 
         newItem.setOnClickListener(v -> {
             Intent newIntent = new Intent(ListItemsActivity.this, SearchItemActivity.class);

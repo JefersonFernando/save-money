@@ -17,6 +17,11 @@ public class ShowItemActivity extends AppCompatActivity {
         TextView quantity = findViewById(R.id.ProductCounter);
         Button increase = findViewById(R.id.button_increase);
         Button decrease = findViewById(R.id.button_decrease);
+        Button searchItem = findViewById(R.id.return_button);
+
+        searchItem.setOnClickListener(v -> {
+            finish();
+        });
 
         increase.setOnClickListener(v -> {
             int value = Integer.parseInt(quantity.getText().toString());
