@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +17,15 @@ public class DataBase {
     public List<Integer> listsIds = new ArrayList<Integer>();
 
 
-    private String path = "/data/data/com.example.save_money_app/databases/saveMoneyDB.db";
+    private String path;
 
-    private DataBase() {
+    private DataBase(Context context) {
         try {
+            this.path = context.getDataDir().toString() + "/saveMoney.db";
+
+
 
             this.dataBase = SQLiteDatabase.openOrCreateDatabase(this.path, null);
-
-//            this.dataBase.execSQL("DROP TABLE IF EXISTS '" + "lists" + "'");
-//            this.dataBase.execSQL("DROP TABLE IF EXISTS '" + "itens" + "'");
 
             this.dataBase.execSQL("CREATE TABLE IF NOT EXISTS lists(" +
                     " id INTEGER PRIMARY KEY AUTOINCREMENT" +
@@ -46,9 +45,9 @@ public class DataBase {
         }
     }
 
-    public static DataBase getInstance() {
+    public static DataBase getInstance(Context context) {
         if (instance == null) {
-            instance = new DataBase();
+            instance = new DataBase(context);
         }
 
         return instance;

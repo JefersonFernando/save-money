@@ -59,7 +59,7 @@ public class ListItemsActivity extends AppCompatActivity {
         listName.setText(intent.getStringExtra("listName"));
         listID = intent.getIntExtra("listID", -1);
 
-        dataBase = DataBase.getInstance();
+        dataBase = DataBase.getInstance(this);
 
         listItemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
         items.setAdapter(listItemsAdapter);
@@ -108,7 +108,7 @@ public class ListItemsActivity extends AppCompatActivity {
             input.setRawInputType(Configuration.KEYBOARD_12KEY);
             input.setText(""+dataBase.getItemQty(this.itemsIds.get(position)));
             new AlertDialog.Builder(this)
-                    .setTitle("Adicionar/remover item")
+                    .setTitle("Quantidade")
                     .setView(input)
                     .setNegativeButton("Cancelar", (dialog, i) -> {
                         dialog.dismiss();

@@ -37,7 +37,7 @@ public class SearchItemActivity extends AppCompatActivity {
     private List<String> codBarras = new ArrayList<>();
     private ArrayAdapter<String> listsAdapter;
     private int listID;
-    private DataBase dataBase = DataBase.getInstance();
+    private DataBase dataBase = DataBase.getInstance(this);
     String url ="https://savemoney.anticitizen1.com/produtos/busca?q=nescau";
 
     @Override
@@ -112,7 +112,7 @@ public class SearchItemActivity extends AppCompatActivity {
             input.setInputType(InputType.TYPE_CLASS_NUMBER);
             input.setRawInputType(Configuration.KEYBOARD_12KEY);
             new AlertDialog.Builder(this)
-                    .setTitle("Adicionar/remover item")
+                    .setTitle("Quantidade")
                     .setView(input)
                     .setNegativeButton("Cancelar", (dialog, i) -> {
                         dialog.dismiss();

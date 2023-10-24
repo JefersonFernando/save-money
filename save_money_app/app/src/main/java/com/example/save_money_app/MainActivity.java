@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dataBase = DataBase.getInstance();
+        dataBase = DataBase.getInstance(this);
 
         listsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, savedLists);
 

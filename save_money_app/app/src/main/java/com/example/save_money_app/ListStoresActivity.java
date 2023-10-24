@@ -64,7 +64,7 @@ public class ListStoresActivity extends AppCompatActivity {
         storeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, storeName);
         storesList.setAdapter(storeAdapter);
 
-        dataBase = DataBase.getInstance();
+        dataBase = DataBase.getInstance(this);
 
         String listNameString = dataBase.getListName(listID);
         if (listNameString == null) {
