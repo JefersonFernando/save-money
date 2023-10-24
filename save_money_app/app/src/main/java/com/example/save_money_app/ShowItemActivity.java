@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 public class ShowItemActivity extends AppCompatActivity {
 
+    private int listID;
+    private String codBarras;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,9 +20,20 @@ public class ShowItemActivity extends AppCompatActivity {
         TextView quantity = findViewById(R.id.ProductCounter);
         Button increase = findViewById(R.id.button_increase);
         Button decrease = findViewById(R.id.button_decrease);
-        Button searchItem = findViewById(R.id.return_button);
+        Button returnButton = findViewById(R.id.return_button);
+        TextView description = findViewById(R.id.textView2);
+        TextView GTIN = findViewById(R.id.textView4);
 
-        searchItem.setOnClickListener(v -> {
+        Intent intent = getIntent();
+        listID = intent.getIntExtra("listID", -1);
+        codBarras = intent.getStringExtra("codBarras");
+        if(listID == -1) {
+            finish();
+        }
+
+        GTIN.setText(codBarras);
+
+        returnButton.setOnClickListener(v -> {
             finish();
         });
 

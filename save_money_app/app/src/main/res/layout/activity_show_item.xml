@@ -57,7 +57,7 @@
         android:layout_marginTop="51dp"
         android:layout_marginBottom="18dp"
 
-        android:text="Doce de Leite Camponesa Barra - 200G"
+        android:text=""
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="?colorSecondary"
         app:layout_constraintBottom_toTopOf="@+id/textView3"
@@ -72,7 +72,7 @@
         android:layout_height="wrap_content"
 
         android:layout_marginBottom="18dp"
-        android:text="Marca: Camponesa"
+        android:text=""
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="?colorSecondary"
         app:layout_constraintBottom_toTopOf="@+id/textView4"
@@ -86,7 +86,7 @@
         android:layout_height="wrap_content"
 
         android:layout_marginBottom="18dp"
-        android:text="GTIN/EAN: 7896259412090"
+        android:text="GTIN/EAN:"
 
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="?colorSecondary"
@@ -101,7 +101,6 @@
         android:layout_height="262dp"
 
         android:layout_marginTop="18dp"
-        android:src="@drawable/item_camponesa"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />

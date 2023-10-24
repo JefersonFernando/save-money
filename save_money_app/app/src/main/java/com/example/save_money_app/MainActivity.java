@@ -24,8 +24,6 @@ public class MainActivity extends AppCompatActivity {
     private List<String> savedLists = new ArrayList<>();
     private ArrayAdapter<String> listsAdapter;
 
-    Context ctx = this;
-
     private DataBase dataBase;
 
     @Override
@@ -33,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dataBase = DataBase.getInstance(ctx);
+        dataBase = DataBase.getInstance();
 
         listsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, savedLists);
 
@@ -50,8 +48,6 @@ public class MainActivity extends AppCompatActivity {
                         dialog.dismiss();
                     })
                     .setPositiveButton("Ok", (dialog, i) -> {
-//                        savedLists.add(input.getText().toString());
-//                        listsAdapter.notifyDataSetChanged();
                         dataBase.insertList(input.getText().toString());
                         updateLists();
                     })
@@ -62,7 +58,15 @@ public class MainActivity extends AppCompatActivity {
 
         lists.setOnItemClickListener((parent, view, position, id) -> {
             Intent intent = new Intent(MainActivity.this, ListItemsActivity.class);
-            intent.putExtra("listName", savedLists.get(position));
+
+            String listName  = savedLists.get(position);
+            int listIndex = position;
+            int listID = dataBase.getListID(position);
+
+            Log.d("Selected list:", "Name:" + listName + " Index:" + listIndex + " ListID:" + listID);
+
+            intent.putExtra("listName", listName);
+            intent.putExtra("listID", listID);
             startActivity(intent);
         });
 
