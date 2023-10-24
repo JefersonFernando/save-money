@@ -111,4 +111,14 @@
         app:layout_constraintTop_toBottomOf="@+id/items_list"
         app:layout_constraintVertical_bias="1.0" />
 
+    <Button
+        android:id="@+id/delete_list"
+        android:layout_width="57dp"
+        android:layout_height="47dp"
+
+        android:text="X"
+        app:cornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/items_list"
+        app:layout_constraintTop_toTopOf="@+id/list_name" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,6 +27,18 @@ public class MainActivity extends AppCompatActivity {
     private DataBase dataBase;
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        updateLists();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateLists();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -77,12 +89,13 @@ public class MainActivity extends AppCompatActivity {
     private void updateLists() {
         List<String> lists = dataBase.getLists();
 
+        savedLists.clear();
+
         if(lists == null){
             Log.d("UpdateLists:", "NULL Value");
+            listsAdapter.notifyDataSetChanged();
             return;
         }
-
-        savedLists.clear();
 
         for(int i = 0; i < lists.size(); i++){
             savedLists.add(lists.get(i));

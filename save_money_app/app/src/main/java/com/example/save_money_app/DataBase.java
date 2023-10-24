@@ -18,7 +18,6 @@ public class DataBase {
     public List<Integer> listsIds = new ArrayList<Integer>();
 
 
-
     private String path = "/data/data/com.example.save_money_app/databases/saveMoneyDB.db";
 
     private DataBase() {
@@ -56,21 +55,23 @@ public class DataBase {
     }
 
     public List<String> getLists() {
-        try{
+        try {
             this.dataBase = SQLiteDatabase.openOrCreateDatabase(this.path, null);
 
             Cursor dbCursor = this.dataBase.rawQuery("SELECT id, nome FROM lists", null);
 
-            dbCursor.moveToFirst();
+            if (!dbCursor.moveToFirst()) {
+                return null;
+            }
 
             lists.clear();
             listsIds.clear();
 
-            while( dbCursor != null ){
+            while (dbCursor != null) {
                 lists.add(dbCursor.getString(1));
                 listsIds.add(dbCursor.getInt(0));
 
-                if(dbCursor.isLast()){
+                if (dbCursor.isLast()) {
                     break;
                 }
 
@@ -81,7 +82,7 @@ public class DataBase {
 
             return lists;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -110,15 +111,15 @@ public class DataBase {
     }
 
     public int getListID(int index) {
-        if ( index  < listsIds.size()){
+        if (index < listsIds.size()) {
             return listsIds.get(index).intValue();
         }
 
         return -1;
     }
 
-    public List<Integer> getListItemsIds (int ListID) {
-        try{
+    public List<Integer> getListItemsIds(int ListID) {
+        try {
             this.dataBase = SQLiteDatabase.openOrCreateDatabase(this.path, null);
 
             Cursor dbCursor = this.dataBase.rawQuery("SELECT id FROM itens WHERE listaID =" + ListID, null);
@@ -127,11 +128,11 @@ public class DataBase {
 
             List<Integer> itemsIds = new ArrayList<Integer>();
 
-            while( dbCursor != null ){
+            while (dbCursor != null) {
 
                 itemsIds.add(dbCursor.getInt(0));
 
-                if(dbCursor.isLast()){
+                if (dbCursor.isLast()) {
                     break;
                 }
 
@@ -142,7 +143,7 @@ public class DataBase {
 
             return itemsIds;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -150,12 +151,12 @@ public class DataBase {
     }
 
     public String getItemName(int itemID) {
-        try{
+        try {
             this.dataBase = SQLiteDatabase.openOrCreateDatabase(this.path, null);
 
             Cursor dbCursor = this.dataBase.rawQuery("SELECT nome FROM itens WHERE id =" + itemID, null);
 
-            if ( !dbCursor.moveToFirst()) {
+            if (!dbCursor.moveToFirst()) {
                 return null;
             }
 
@@ -167,30 +168,30 @@ public class DataBase {
 
             return itemName;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return null;
     }
 
-    public int setItemOnList (String codBarras, String itemName, int listID, int quantity) {
+    public int setItemOnList(String codBarras, String itemName, int listID, int quantity) {
 
-        try{
+        try {
             this.dataBase = SQLiteDatabase.openOrCreateDatabase(this.path, null);
 
             Cursor dbCursor = this.dataBase.rawQuery("SELECT id, listaID FROM itens WHERE codigoBarra =" + codBarras, null);
 
             if (dbCursor.moveToFirst()) {
-                while( dbCursor != null ){
+                while (dbCursor != null) {
 
                     if (dbCursor.getInt(1) == listID) {
-                        this.dataBase.execSQL("UPDATE itens SET quantidade="+ quantity + " WHERE id=" + dbCursor.getInt(0));
+                        this.dataBase.execSQL("UPDATE itens SET quantidade=" + quantity + " WHERE id=" + dbCursor.getInt(0));
                         this.dataBase.close();
                         return 0;
                     }
 
-                    if(dbCursor.isLast()){
+                    if (dbCursor.isLast()) {
                         break;
                     }
 
@@ -200,7 +201,7 @@ public class DataBase {
 
             ContentValues values = new ContentValues();
 
-            values.put("nome", itemName );
+            values.put("nome", itemName);
             values.put("quantidade", quantity);
             values.put("listaID", listID);
             values.put("codigoBarra", codBarras);
@@ -211,11 +212,124 @@ public class DataBase {
 
             return 0;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return -1;
         }
 
+    }
+
+    public int setItemQtyOnList(int itemID, int quantity) {
+
+        try {
+            this.dataBase = SQLiteDatabase.openOrCreateDatabase(this.path, null);
+
+            if (quantity != 0) {
+                this.dataBase.execSQL("UPDATE itens SET quantidade=" + quantity + " WHERE id=" + itemID);
+            } else {
+                this.dataBase.delete("itens", "id=" + itemID, null);
+            }
+
+            this.dataBase.close();
+
+            return 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+
+    }
+
+    public int getItemQty(int itemID) {
+        try {
+            this.dataBase = SQLiteDatabase.openOrCreateDatabase(this.path, null);
+
+            Cursor dbCursor = this.dataBase.rawQuery("SELECT quantidade FROM itens WHERE id =" + itemID, null);
+
+            if (!dbCursor.moveToFirst()) {
+                return -1;
+            }
+
+            int itemQty = dbCursor.getInt(0);
+
+            this.dataBase.close();
+
+            return itemQty;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+
+    public int deleteList(int listID) {
+        try {
+            this.dataBase = SQLiteDatabase.openOrCreateDatabase(this.path, null);
+
+            this.dataBase.delete("itens", "listaID=" + listID, null);
+            this.dataBase.delete("lists", "id=" + listID, null);
+
+            this.dataBase.close();
+
+            return 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+
+    public String getListName(int listID) {
+        try {
+            this.dataBase = SQLiteDatabase.openOrCreateDatabase(this.path, null);
+
+            Cursor dbCursor = this.dataBase.rawQuery("SELECT nome FROM lists WHERE id =" + listID, null);
+
+            if (!dbCursor.moveToFirst()) {
+                return null;
+            }
+
+            String listName = dbCursor.getString(0);
+
+            this.dataBase.close();
+
+            return listName;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public List<String> getListBarCodes(int listID) {
+        try {
+            this.dataBase = SQLiteDatabase.openOrCreateDatabase(this.path, null);
+
+            Cursor dbCursor = this.dataBase.rawQuery("SELECT codigoBarra FROM itens WHERE listaID =" + listID, null);
+
+            if (!dbCursor.moveToFirst()) {
+                return null;
+            }
+
+            List<String> barCodes = new ArrayList<String>();
+
+            do {
+                barCodes.add(dbCursor.getString(0));
+            } while (dbCursor.moveToNext());
+
+            this.dataBase.close();
+
+            return barCodes;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 }

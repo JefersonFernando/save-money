@@ -2,14 +2,19 @@ package com.example.save_money_app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +29,18 @@ public class ListItemsActivity extends AppCompatActivity {
     private List<Integer> itemsIds;
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        updateItems();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateItems();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_items);
@@ -33,6 +50,7 @@ public class ListItemsActivity extends AppCompatActivity {
         TextView listName = findViewById(R.id.list_name);
         Button newItem = findViewById(R.id.add_item);
         Button search = findViewById(R.id.search);
+        Button deleteList = findViewById(R.id.delete_list);
         ListView items = findViewById(R.id.items_list);
 
         Button returnButton = findViewById(R.id.return_button);
@@ -61,12 +79,45 @@ public class ListItemsActivity extends AppCompatActivity {
 
         search.setOnClickListener(v -> {
             Intent newIntent = new Intent(ListItemsActivity.this, ListStoresActivity.class);
+            newIntent.putExtra("listID", listID);
             startActivity(newIntent);
         });
 
         items.setOnItemClickListener((parent, view, position, id) -> {
             Intent newIntent = new Intent(ListItemsActivity.this, ShowItemActivity.class);
             startActivity(newIntent);
+        });
+
+        deleteList.setOnClickListener(v -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Apagar lista?")
+                    .setNegativeButton("Cancelar", (dialog, i) -> {
+                        dialog.dismiss();
+                    })
+                    .setPositiveButton("Ok", (dialog, i) -> {
+                        dataBase.deleteList(this.listID);
+                        finish();
+                    })
+                    .show();
+        });
+
+        items.setOnItemClickListener((parent, view, position, id) -> {
+
+            final EditText input = new EditText(this);
+            input.setInputType(InputType.TYPE_CLASS_NUMBER);
+            input.setRawInputType(Configuration.KEYBOARD_12KEY);
+            input.setText(""+dataBase.getItemQty(this.itemsIds.get(position)));
+            new AlertDialog.Builder(this)
+                    .setTitle("Adicionar/remover item")
+                    .setView(input)
+                    .setNegativeButton("Cancelar", (dialog, i) -> {
+                        dialog.dismiss();
+                    })
+                    .setPositiveButton("Ok", (dialog, i) -> {
+                        dataBase.setItemQtyOnList(this.itemsIds.get(position), Integer.parseInt(input.getText().toString()));
+                        updateItems();
+                    })
+                    .show();
         });
 
         updateItems();
@@ -82,6 +133,7 @@ public class ListItemsActivity extends AppCompatActivity {
         Log.d("Items:", ""+itemsIds);
 
         if(this.itemsIds == null) {
+            this.listItemsAdapter.notifyDataSetChanged();
             return;
         }
 

@@ -118,8 +118,6 @@ public class SearchItemActivity extends AppCompatActivity {
                         dialog.dismiss();
                     })
                     .setPositiveButton("Ok", (dialog, i) -> {
-//                        dataBase.insertList(input.getText().toString());
-//                        updateLists();
                         dataBase.setItemOnList(codBarras.get(position), itens.get(position), listID, Integer.parseInt(input.getText().toString()));
                     })
                     .show();
